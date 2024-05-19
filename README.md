@@ -41,26 +41,60 @@ En este laboratorio, se seguirán los siguientes pasos:
 - Darle a la opción craer Cluster
 - Esperamos unos minutos, hasta que el cluster este creado.
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/3862d2d6-2785-4b90-97b0-ce6660f465af)
-- Damos click en el nombre del cluster para poder acceder a las configuraciones.
+- Hacemos clic en el nombre del clúster para acceder a las configuraciones.
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/8cb9f428-a248-41b8-b88b-6ef3d7103c87)
-- Al momento de acceder, revisamos en la parte superior derecha un boton llamado "Query data", damos click en ese boton y nos vamos a la opcion "Query in query editor v2".
+- Al acceder, revisamos en la parte superior derecha un botón llamado "Query data". Hacemos clic en ese botón y seleccionamos la opción "Query in query editor v2".
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/a0ce9d66-9495-4f1e-9002-edd1a04f5acf)
-- Al momento de ingresar, observaremos la siguiente pagina: 
+- Al ingresar, veremos la siguiente página:
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/8b5ab68e-7925-4c0a-935c-394b90e8fb92)
-- Nos vamos al apartado donde esta nuestro nombre del cluster, y damos click en los tres puntos, para luego dirigirnos a la opcion "Create connection".
+- Nos dirigimos al apartado donde aparece el nombre de nuestro clúster y hacemos clic en los tres puntos. Luego, seleccionamos la opción "Create connection".
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/4f503c28-5470-4319-b1c2-4af349827394)
-- Seleccionamos la cuarta opcion para iniciar la conexion, la cual se llama "Database user name and password", luego diligenciamos el "user name" y el "password" que habiamos creado anteriormente en el cluster.
+- Seleccionamos la cuarta opción, "Database user name and password," para iniciar la conexión. A continuación, ingresamos el "user name" y la "password" que habíamos creado previamente en el clúster.
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/de26d367-5c96-49a8-a58d-eacc9a4452ef)
-- Damos click en la opcion "Create connection"
+- Hacemos clic en la opción "Create connection".
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/9282cf0c-7ab0-43a9-971a-a5e394e21181)
 - Se cargaran las carpetas y archivos correspondientes para realizar las consultas.
 - Nos dirigimos a la carpeta "sample_data_dev" y damos click en la subcarpeta "tickit" en la opcion "open sample notebooks".
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/e8dd63b4-e227-40aa-8f8c-6f68eaea50f4)
-- Damos click en la opcion "Create"
+- Hacemos clic en la opción "Create".
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/4c08300f-4bef-4493-92f7-b560bf4514dc)
 - Creación de tablas externas y consultas a esos datos como si estuvieran en la base de datos Redshift, permitiendo análisis de datos distribuidos entre Redshift y S3.
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/9b9d8fce-6eef-498b-8b94-3384ddad77e6)
-- 
+
+- Ejmeplos de las consultas: 
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/5683bdbd-0326-4c19-bb3b-416669a26a9e)
+
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/57e7a96a-0417-4d4a-93ba-7b39c4a9c741)
+
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/96ff0319-1b8c-4a77-8ac0-fb6bf240a362)
+
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/870f2a2e-e36d-4b4d-8a9d-0b4517104510)
+
+- Terminamos el laboratorio
+- NOTA: Recuerde que debe pausar o borrar el clúster si no va a trabajar más, ya que seguirá cobrando incluso después de terminar el laboratorio de AWS Academy.
+
+- REDSHIFT SPECTRUM (opcional)
+Redshift Spectrum: consultas de datos en S3 a través de Redshift.
+Referencia: Documentación de Redshift Spectrum (https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum.html)
+
+- Crear un rol IAM para Amazon Redshift:
+  - Abrir la consola de IAM.
+  - En el panel de navegación, seleccionar "Roles".
+  - Hacer clic en "Crear rol".
+  - Seleccionar "AWS service", luego elegir "Redshift".
+  - En "Select your use case", elegir "Redshift - Customizable" y luego hacer clic en "Siguiente: Permisos".
+  - En la página "Attach permissions policy", seleccionar "AmazonS3ReadOnlyAccess",   "AWSGlueConsoleFullAccess" y "AmazonAthenaFullAccess". Luego, hacer clic en "Siguiente: Revisar".
+ 
+- Configurar el rol:\
+  - En "Role name", ingresar "myspectrum_role".
+  - Revisar la información y luego hacer clic en "Crear rol".
+  - En el panel "Roles", seleccionar el rol recién creado y copiar el Role ARN al portapapeles. Este ARN será utilizado al crear la tabla externa en Amazon S3.
+ 
+Nota: En la cuenta de AWS Academy, no se permite crear usuarios, grupos ni roles, por lo que recibirá un mensaje de error si intenta hacerlo.
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/e960de3c-53ae-44eb-aa1c-aa20b6ed5917)
+
+
+
 
 
 

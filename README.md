@@ -112,7 +112,9 @@ Nota: En la cuenta de AWS Academy, no se permite crear usuarios, grupos ni roles
 - Nuevo ARN : arn:aws:iam::851725175559:role/LabRole
 - Volvemos al editor SQL v2:
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/79026d57-82e1-4509-811d-b5c36f8c7baa)
+
 - Crear la base de datos externa:
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/6ffeca35-18f2-4c60-a114-6ccebf29ba86)
 ```
 create external schema myspectrum_schema 
 from data catalog 
@@ -122,6 +124,7 @@ create external database if not exists;
 ```
 
 - Crear una tabla con datos externos en S3:
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/830882cf-fd9e-4aac-865e-8f84a4607d9e)
 ```
 create external table myspectrum_schema.sales(
 salesid integer,
@@ -148,6 +151,8 @@ select count(*) from myspectrum_schema.sales;
 ```
 
 - Crear una tabla nativa en Redshift para combinarla con la tabla externa en una consulta:
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/c9b161aa-f55a-40ce-82a4-be61e338c516)
+
 ```
 create table event2(
 eventid integer not null distkey,

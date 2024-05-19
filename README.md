@@ -34,6 +34,7 @@ En este laboratorio, se seguirán los siguientes pasos:
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/094c3ffd-7814-4eda-bd2f-021840b9d4ac)
 - Ingresas un usuario y contraseña (Recuerdalo ya que se utilizara mas adelante)
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/3d9fb572-1502-4e30-963b-4a4dd2ca3143)
+- Asignamos los tres roles respectivos para los permisos:
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/b52eca39-7cfd-4f10-b090-ffa5700886ea)
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/49ae5f5f-1170-423f-9710-a197ad5b4920)
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/5c1a3fe7-8d06-4ed3-8ec6-7c62e2175621)
@@ -115,35 +116,35 @@ Nota: En la cuenta de AWS Academy, no se permite crear usuarios, grupos ni roles
 
 - Crear la base de datos externa:
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/6ffeca35-18f2-4c60-a114-6ccebf29ba86)
-```
-create external schema myspectrum_schema 
-from data catalog 
-database 'myspectrum_db' 
-iam_role 'arn:aws:iam::433075868803:role/LabRole'
-create external database if not exists;
-```
+  ```
+  create external schema myspectrum_schema 
+  from data catalog 
+  database 'myspectrum_db' 
+  iam_role 'arn:aws:iam::433075868803:role/LabRole'
+  create external database if not exists;
+  ```  
 
 - Crear una tabla con datos externos en S3:
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/830882cf-fd9e-4aac-865e-8f84a4607d9e)
-```
-create external table myspectrum_schema.sales(
-salesid integer,
-listid integer,
-sellerid integer,
-buyerid integer,
-eventid integer,
-dateid smallint,
-qtysold smallint,
-pricepaid decimal(8,2),
-commission decimal(8,2),
-saletime timestamp)
-row format delimited
-fields terminated by '\t'
-stored as textfile
-location 's3://emontoyadatalake/datasets/tickitdb2/sales/'
-table properties ('numRows'='172000');
-
-```
+  ```
+  create external table myspectrum_schema.sales(
+  salesid integer,
+  listid integer,
+  sellerid integer,
+  buyerid integer,
+  eventid integer,
+  dateid smallint,
+  qtysold smallint,
+  pricepaid decimal(8,2),
+  commission decimal(8,2),
+  saletime timestamp)
+  row format delimited
+  fields terminated by '\t'
+  stored as textfile
+  location 's3://emontoyadatalake/datasets/tickitdb2/sales/'
+  table properties ('numRows'='172000');
+  
+  ```
 
 - Consultar datos:
 ```
@@ -153,15 +154,15 @@ select count(*) from myspectrum_schema.sales;
 - Crear una tabla nativa en Redshift para combinarla con la tabla externa en una consulta:
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/c9b161aa-f55a-40ce-82a4-be61e338c516)
 
-```
-create table event2(
-eventid integer not null distkey,
-venueid smallint not null,
-catid smallint not null,
-dateid smallint not null sortkey,
-eventname varchar(200),
-starttime timestamp);
-```
+  ```
+  create table event2(
+  eventid integer not null distkey,
+  venueid smallint not null,
+  catid smallint not null,
+  dateid smallint not null sortkey,
+  eventname varchar(200),
+  starttime timestamp);
+  ```
 
 - Cargar datos en la tabla 'event2':
 ```

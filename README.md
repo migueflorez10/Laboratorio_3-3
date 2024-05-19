@@ -1,9 +1,7 @@
 ### Info de la Materia: Topicos Especiales en Telematica-st0263
-# Link de Sustentación:
 
-### Estudiantes:
+### Estudiante:
 - Miguel Angel Martinez Florez, mamartinef@eafit.edu.co
-- Mateo Muñoz Cadavid, mmunozc4@eafit.edu.co
 
 ### Profesor:  Edwin Nelson Montoya Munera, emontoya@eafit.edu.co  
 

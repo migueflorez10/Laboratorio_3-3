@@ -85,7 +85,7 @@ Referencia: Documentación de Redshift Spectrum (https://docs.aws.amazon.com/red
   - En "Select your use case", elegir "Redshift - Customizable" y luego hacer clic en "Siguiente: Permisos".
   - En la página "Attach permissions policy", seleccionar "AmazonS3ReadOnlyAccess",   "AWSGlueConsoleFullAccess" y "AmazonAthenaFullAccess". Luego, hacer clic en "Siguiente: Revisar".
  
-- Configurar el rol:\
+- Configurar el rol:
   - En "Role name", ingresar "myspectrum_role".
   - Revisar la información y luego hacer clic en "Crear rol".
   - En el panel "Roles", seleccionar el rol recién creado y copiar el Role ARN al portapapeles. Este ARN será utilizado al crear la tabla externa en Amazon S3.
@@ -94,15 +94,88 @@ Nota: En la cuenta de AWS Academy, no se permite crear usuarios, grupos ni roles
 ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/e960de3c-53ae-44eb-aa1c-aa20b6ed5917)
 
 
+- Pero para crear la tabla externa en Redshift Spectrum, puede usar el rol predeterminado 'LabRole', que ya ha sido configurado durante la instalación del clúster 'redshift-cluster-1'.
+- Para actualizar el ARN del 'LabRole', siga estos pasos:
+  - Acceda al servicio IAM en la consola de AWS.
+  ![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/54142e1c-209c-4217-942b-982a68d57a6f)
 
+  - Busque 'LabRole' en la lista de roles y selecciónelo.
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/040faf19-3857-4164-9c6a-be687e83b606)
 
+  - Ingresamos a 'LabRole'.
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/e8cb5279-dda1-4eef-8546-408d7363f52a)
 
+  - Copie el nuevo ARN del 'LabRole'.
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/d9c0311e-cbde-4dee-9b5b-cdbb59c56735)
 
+- Este ARN será utilizado al crear la tabla externa en Redshift Spectrum.
+- Nuevo ARN : arn:aws:iam::851725175559:role/LabRole
+- Volvemos al editor SQL v2:
+![image](https://github.com/migueflorez10/Laboratorio_3-3/assets/68928440/79026d57-82e1-4509-811d-b5c36f8c7baa)
+- Crear la base de datos externa:
+```
+create external schema myspectrum_schema 
+from data catalog 
+database 'myspectrum_db' 
+iam_role 'arn:aws:iam::433075868803:role/LabRole'
+create external database if not exists;
+```
 
+- Crear una tabla con datos externos en S3:
+```
+create external table myspectrum_schema.sales(
+salesid integer,
+listid integer,
+sellerid integer,
+buyerid integer,
+eventid integer,
+dateid smallint,
+qtysold smallint,
+pricepaid decimal(8,2),
+commission decimal(8,2),
+saletime timestamp)
+row format delimited
+fields terminated by '\t'
+stored as textfile
+location 's3://emontoyadatalake/datasets/tickitdb2/sales/'
+table properties ('numRows'='172000');
 
+```
 
+- Consultar datos:
+```
+select count(*) from myspectrum_schema.sales;
+```
 
+- Crear una tabla nativa en Redshift para combinarla con la tabla externa en una consulta:
+```
+create table event2(
+eventid integer not null distkey,
+venueid smallint not null,
+catid smallint not null,
+dateid smallint not null sortkey,
+eventname varchar(200),
+starttime timestamp);
+```
 
+- Cargar datos en la tabla 'event2':
+```
+COPY event2 FROM 's3://emontoyadatalake/datasets/tickitdb2/events/allevents.txt'
+iam_role 'arn:aws:iam::433075868803:role/LabRole'
+delimiter '|' timeformat 'YYYY-MM-DD HH:MI:SS' region 'us-east-1';
+```
+
+- Realizar una consulta con tablas externas y nativas:
+```
+select top 10 myspectrum_schema.sales.eventid, sum(myspectrum_schema.sales.pricepaid) 
+from myspectrum_schema.sales, event2
+where myspectrum_schema.sales.eventid = event2.eventid
+and myspectrum_schema.sales.pricepaid > 30
+group by myspectrum_schema.sales.eventid
+order by 2 desc;
+```
+
+- **ADVERTENCIA:** Recuerde pausar o borrar el clúster si no va a trabajar más, ya que seguirá cobrando incluso después de terminar el laboratorio de AWS Academy.
 
 
 ## Resultados Esperados
@@ -110,8 +183,6 @@ Nota: En la cuenta de AWS Academy, no se permite crear usuarios, grupos ni roles
 - Cargar datos en el cluster desde Amazon S3 y ejecutar consultas SQL para analizar esos datos.
 - Configurar Redshift Spectrum para acceder a datos externos y realizar consultas distribuidas entre Redshift y S3.
 - Tener una comprensión práctica de cómo implementar y utilizar un data warehouse en AWS, lo cual es esencial para el análisis y la gestión eficiente de grandes volúmenes de datos en la nube.
-
-
 
 
 ## Descripción del Ambiente de Desarrollo y Técnico
